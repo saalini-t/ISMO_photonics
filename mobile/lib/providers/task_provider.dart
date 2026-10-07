@@ -2,9 +2,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/models/task.dart';
 import 'package:mobile/services/task_service.dart';
 import 'package:mobile/services/api_service.dart';
+import 'package:mobile/providers/auth_provider.dart';
 
 final taskServiceProvider = Provider<TaskService>((ref) {
-  final apiService = ApiService();
+  final apiService = ref.read(apiServiceProvider);
   return TaskService(apiService);
 });
 

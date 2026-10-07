@@ -2,9 +2,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile/models/project.dart';
 import 'package:mobile/services/project_service.dart';
 import 'package:mobile/services/api_service.dart';
+import 'package:mobile/providers/auth_provider.dart';
 
 final projectServiceProvider = Provider<ProjectService>((ref) {
-  final apiService = ApiService();
+  final apiService = ref.read(apiServiceProvider);
   return ProjectService(apiService);
 });
 

@@ -25,12 +25,12 @@ class ProjectService {
 
     final response = await _apiService.get('/projects', queryParameters: queryParams);
     
-    final List<dynamic> data = response.data['data'] ?? [];
+    final List<dynamic> data = response['data'] ?? [];
     final projects = data.map((json) => Project.fromJson(json)).toList();
     
     return {
       'projects': projects,
-      'pagination': response.data['pagination'] ?? {
+      'pagination': response['pagination'] ?? {
         'page': page,
         'limit': limit,
         'totalCount': projects.length,
@@ -41,17 +41,17 @@ class ProjectService {
 
   Future<Project> getProjectById(String id) async {
     final response = await _apiService.get('/projects/$id');
-    return Project.fromJson(response.data['data']);
+    return Project.fromJson(response['data']);
   }
 
   Future<Project> createProject(Map<String, dynamic> data) async {
     final response = await _apiService.post('/projects', data: data);
-    return Project.fromJson(response.data['data']);
+    return Project.fromJson(response['data']);
   }
 
   Future<Project> updateProject(String id, Map<String, dynamic> data) async {
     final response = await _apiService.put('/projects/$id', data: data);
-    return Project.fromJson(response.data['data']);
+    return Project.fromJson(response['data']);
   }
 
   Future<void> deleteProject(String id) async {
