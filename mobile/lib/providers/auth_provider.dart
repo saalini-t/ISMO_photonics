@@ -58,7 +58,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
     try {
       final token = await _storageService.getToken();
       if (token == null) {
-        state = state.copyWith(status: AuthStatus.unauthenticated);
+        state = state.copyWith(status: AuthStatus.unauthenticated, user: null);
         return;
       }
 
@@ -71,18 +71,22 @@ class AuthNotifier extends StateNotifier<AuthState> {
         );
       }
 
+      // Verify token in background without logging out user if network drops
       final user = await _authService.getMe();
       if (user != null) {
         state = state.copyWith(status: AuthStatus.authenticated, user: user);
-      } else {
+      } else if (state.user == null) {
+        // Only mark unauthenticated if we have no valid cached user
         await _authService.logout();
-        state = state.copyWith(status: AuthStatus.unauthenticated);
+        state = state.copyWith(status: AuthStatus.unauthenticated, user: null);
       }
     } catch (e) {
-      state = state.copyWith(
-        status: AuthStatus.unauthenticated,
-        errorMessage: e.toString(),
-      );
+      if (state.user == null) {
+        state = state.copyWith(
+          status: AuthStatus.unauthenticated,
+          errorMessage: null,
+        );
+      }
     }
   }
 
