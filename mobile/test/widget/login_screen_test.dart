@@ -12,20 +12,20 @@ void main() {
     );
   }
 
-  testWidgets('Test that LoginScreen renders email & password fields and Login button', (WidgetTester tester) async {
+  testWidgets('Test that LoginScreen renders email & password fields and Sign In button', (WidgetTester tester) async {
     await tester.pumpWidget(createWidgetUnderTest());
 
     expect(find.byType(TextFormField), findsNWidgets(2));
-    expect(find.text('Email'), findsOneWidget);
+    expect(find.text('Email Address'), findsOneWidget);
     expect(find.text('Password'), findsOneWidget);
-    expect(find.widgetWithText(ElevatedButton, 'Login'), findsOneWidget);
-    expect(find.text('Don\'t have an account? Register'), findsOneWidget);
+    expect(find.widgetWithText(ElevatedButton, 'Sign In'), findsOneWidget);
+    expect(find.text('Create Account'), findsOneWidget);
   });
 
   testWidgets('Test form validation triggers when empty fields are submitted', (WidgetTester tester) async {
     await tester.pumpWidget(createWidgetUnderTest());
 
-    await tester.tap(find.widgetWithText(ElevatedButton, 'Login'));
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Sign In'));
     await tester.pump();
 
     expect(find.text('Required'), findsNWidgets(2));
@@ -37,7 +37,7 @@ void main() {
       onRegister: () => isRegisteredTapped = true,
     ));
 
-    await tester.tap(find.text('Don\'t have an account? Register'));
+    await tester.tap(find.text('Create Account'));
     await tester.pump();
 
     expect(isRegisteredTapped, isTrue);
