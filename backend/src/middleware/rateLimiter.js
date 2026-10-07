@@ -1,30 +1,23 @@
 const rateLimit = require('express-rate-limit');
 const ApiError = require('../utils/ApiError');
 
-const isTest = process.env.NODE_ENV === 'test';
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  skip: () => process.env.NODE_ENV === 'test',
+  handler: (req, res, next) => {
+    next(ApiError.tooManyRequests('Too many requests, please try again later.'));
+  }
+});
 
-// Skip rate limiting in test environment
-const passThrough = (req, res, next) => next();
-
-const authLimiter = isTest
-  ? passThrough
-  : rateLimit({
-      windowMs: 15 * 60 * 1000,
-      max: 10,
-      handler: (req, res, next) => {
-        next(ApiError.tooManyRequests('Too many requests, please try again later.'));
-      }
-    });
-
-const generalLimiter = isTest
-  ? passThrough
-  : rateLimit({
-      windowMs: 15 * 60 * 1000,
-      max: 100,
-      handler: (req, res, next) => {
-        next(ApiError.tooManyRequests('Too many requests, please try again later.'));
-      }
-    });
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  skip: () => process.env.NODE_ENV === 'test',
+  handler: (req, res, next) => {
+    next(ApiError.tooManyRequests('Too many requests, please try again later.'));
+  }
+});
 
 module.exports = {
   authLimiter,
