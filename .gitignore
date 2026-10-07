@@ -1,0 +1,11 @@
+.DS_Store
+node_modules/
+.env
+dist/
+build/
+.dart_tool/
+.packages
+*.apk
+.flutter-plugins
+.flutter-plugins-dependencies
+coverage/
