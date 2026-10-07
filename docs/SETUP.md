@@ -61,7 +61,7 @@ cp .env.example .env
 Default `.env` configuration:
 ```env
 DATABASE_URL="postgresql://postgres:postgres@localhost:5432/project_mgmt"
-JWT_SECRET="super-secret-jwt-key-change-in-production-2024"
+JWT_SECRET="secret"
 JWT_EXPIRES_IN="24h"
 PORT=3000
 NODE_ENV="development"

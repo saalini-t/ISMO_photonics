@@ -39,6 +39,14 @@ flutter build apk --debug
 The generated APK file will be located at:
 `mobile/build/app/outputs/flutter-apk/app-debug.apk`
 
+### Build Release Android APK
+```bash
+cd mobile
+flutter build apk --release
+```
+The generated release APK file will be located at:
+`mobile/build/app/outputs/flutter-apk/app-release.apk`
+
 ### Build Web Bundle
 ```bash
 cd mobile
