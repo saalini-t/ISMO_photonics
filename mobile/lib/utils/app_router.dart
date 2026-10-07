@@ -4,7 +4,10 @@ import 'package:go_router/go_router.dart';
 import '../providers/auth_provider.dart';
 import '../screens/login_screen.dart';
 import '../screens/register_screen.dart';
-import '../screens/dashboard_stub_screen.dart';
+import '../screens/dashboard_screen.dart';
+import '../screens/projects_screen.dart';
+import '../screens/project_detail_screen.dart';
+import '../screens/tasks_screen.dart';
 
 final routerProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authProvider);
@@ -44,11 +47,19 @@ final routerProvider = Provider<GoRouter>((ref) {
       ),
       GoRoute(
         path: '/dashboard',
-        builder: (context, state) => const DashboardStubScreen(),
+        builder: (context, state) => const DashboardScreen(),
       ),
       GoRoute(
         path: '/projects',
-        builder: (context, state) => const Scaffold(body: Center(child: Text('Projects Stub'))),
+        builder: (context, state) => const ProjectsScreen(),
+      ),
+      GoRoute(
+        path: '/projects/:id',
+        builder: (context, state) => ProjectDetailScreen(id: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/tasks',
+        builder: (context, state) => const TasksScreen(),
       ),
     ],
   );
