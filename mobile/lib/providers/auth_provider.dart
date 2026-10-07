@@ -92,7 +92,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
       final user = await _authService.login(email, password);
       state = state.copyWith(status: AuthStatus.authenticated, user: user);
     } catch (e) {
-      state = state.copyWith(status: AuthStatus.error, errorMessage: e.toString());
+      final msg = e is ApiException ? e.message : e.toString().replaceAll('Exception: ', '');
+      state = state.copyWith(status: AuthStatus.error, errorMessage: msg);
     }
   }
 
@@ -102,7 +103,8 @@ class AuthNotifier extends StateNotifier<AuthState> {
       final user = await _authService.register(fullName, email, password);
       state = state.copyWith(status: AuthStatus.authenticated, user: user);
     } catch (e) {
-      state = state.copyWith(status: AuthStatus.error, errorMessage: e.toString());
+      final msg = e is ApiException ? e.message : e.toString().replaceAll('Exception: ', '');
+      state = state.copyWith(status: AuthStatus.error, errorMessage: msg);
     }
   }
 

@@ -38,15 +38,15 @@ class ApiService {
         String message = 'Something went wrong';
         int? statusCode = e.response?.statusCode;
 
-        if (e.type == DioExceptionType.connectionTimeout ||
+        if (e.response?.data != null && e.response?.data is Map) {
+          message = e.response?.data['message'] ?? message;
+        } else if (e.type == DioExceptionType.connectionTimeout ||
             e.type == DioExceptionType.receiveTimeout) {
           message = 'Connection timed out. Please try again.';
         } else if (e.error is SocketException) {
           message = 'No Internet connection.';
         } else if (statusCode == 401) {
-          message = 'Unauthorized. Please login again.';
-        } else if (e.response?.data != null && e.response?.data is Map) {
-          message = e.response?.data['message'] ?? message;
+          message = 'Invalid email or password.';
         }
 
         return handler.next(DioException(
