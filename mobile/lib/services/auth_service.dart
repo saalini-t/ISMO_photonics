@@ -15,8 +15,9 @@ class AuthService {
       'password': password,
     });
     
-    final token = response['token'] as String;
-    final userJson = response['user'] as Map<String, dynamic>;
+    final data = response['data'] as Map<String, dynamic>? ?? response;
+    final token = data['token'] as String;
+    final userJson = data['user'] as Map<String, dynamic>;
     
     await _storageService.saveToken(token);
     await _storageService.saveUserJson(jsonEncode(userJson));
@@ -31,8 +32,9 @@ class AuthService {
       'password': password,
     });
     
-    final token = response['token'] as String;
-    final userJson = response['user'] as Map<String, dynamic>;
+    final data = response['data'] as Map<String, dynamic>? ?? response;
+    final token = data['token'] as String;
+    final userJson = data['user'] as Map<String, dynamic>;
     
     await _storageService.saveToken(token);
     await _storageService.saveUserJson(jsonEncode(userJson));
@@ -43,7 +45,8 @@ class AuthService {
   Future<User?> getMe() async {
     try {
       final response = await _apiService.get('/auth/me');
-      final userJson = response['user'] as Map<String, dynamic>? ?? response;
+      final data = response['data'] as Map<String, dynamic>? ?? response;
+      final userJson = data['user'] as Map<String, dynamic>? ?? data;
       
       await _storageService.saveUserJson(jsonEncode(userJson));
       return User.fromJson(userJson);
