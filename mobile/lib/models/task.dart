@@ -14,8 +14,8 @@ class Task {
     required this.id,
     required this.name,
     required this.description,
-    required this.priority,
     required this.status,
+    required this.priority,
     this.dueDate,
     this.createdAt,
     this.updatedAt,
@@ -24,6 +24,11 @@ class Task {
   });
 
   factory Task.fromJson(Map<String, dynamic> json) {
+    String? parsedProjectName = json['projectName'];
+    if (parsedProjectName == null && json['project'] != null && json['project'] is Map) {
+      parsedProjectName = json['project']['name'];
+    }
+
     return Task(
       id: json['id'] ?? '',
       name: json['name'] ?? '',
@@ -34,7 +39,7 @@ class Task {
       createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
       updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
       projectId: json['projectId'] ?? '',
-      projectName: json['projectName'],
+      projectName: parsedProjectName,
     );
   }
 
@@ -50,6 +55,7 @@ class Task {
       'updatedAt': updatedAt?.toIso8601String(),
       'projectId': projectId,
       'projectName': projectName,
+      if (projectName != null) 'project': {'id': projectId, 'name': projectName},
     };
   }
 }

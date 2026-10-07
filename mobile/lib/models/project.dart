@@ -22,6 +22,15 @@ class Project {
   });
 
   factory Project.fromJson(Map<String, dynamic> json) {
+    int parsedTaskCount = 0;
+    if (json['taskCount'] != null) {
+      parsedTaskCount = json['taskCount'] as int;
+    } else if (json['_count'] != null && json['_count']['tasks'] != null) {
+      parsedTaskCount = json['_count']['tasks'] as int;
+    } else if (json['tasks'] != null && json['tasks'] is List) {
+      parsedTaskCount = (json['tasks'] as List).length;
+    }
+
     return Project(
       id: json['id'] ?? '',
       name: json['name'] ?? '',
@@ -31,7 +40,7 @@ class Project {
       endDate: json['endDate'] != null ? DateTime.parse(json['endDate']) : null,
       createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
       updatedAt: json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
-      taskCount: json['taskCount'] ?? 0,
+      taskCount: parsedTaskCount,
     );
   }
 
@@ -46,6 +55,7 @@ class Project {
       'createdAt': createdAt?.toIso8601String(),
       'updatedAt': updatedAt?.toIso8601String(),
       'taskCount': taskCount,
+      '_count': {'tasks': taskCount},
     };
   }
 }

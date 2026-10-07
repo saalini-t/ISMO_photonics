@@ -82,7 +82,15 @@ const createTask = async (userId, data) => {
   }
 
   const task = await prisma.task.create({
-    data
+    data,
+    include: {
+      project: {
+        select: {
+          id: true,
+          name: true
+        }
+      }
+    }
   });
 
   return task;
@@ -117,7 +125,15 @@ const updateTask = async (userId, taskId, data) => {
 
   const updatedTask = await prisma.task.update({
     where: { id: taskId },
-    data
+    data,
+    include: {
+      project: {
+        select: {
+          id: true,
+          name: true
+        }
+      }
+    }
   });
 
   return updatedTask;
