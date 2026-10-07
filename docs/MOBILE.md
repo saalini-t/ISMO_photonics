@@ -45,3 +45,4 @@ cd mobile
 flutter build web
 ```
 The output static web assets will be generated in `mobile/build/web`.
+

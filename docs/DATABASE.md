@@ -83,3 +83,4 @@ erDiagram
 1. **User Isolation**: Projects and Tasks query filtering guarantees that users can only read, modify, or delete records where `userId == req.user.id`.
 2. **Cascade Deletion**: When a `Project` is deleted, PostgreSQL automatically cascades and deletes all associated `Task` rows.
 3. **Prepared Statements**: Prisma automatically uses parameterized queries to prevent SQL injection vulnerabilities.
+

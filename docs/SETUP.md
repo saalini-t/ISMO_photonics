@@ -142,3 +142,4 @@ flutter test
 | `PORT` | Node.js Express server listening port | `3000` | No (Default: 3000) |
 | `NODE_ENV` | Application environment (`development`, `test`, `production`) | `development` | No |
 | `CORS_ORIGIN` | Allowed CORS origins for web requests | `*` | No |
+
