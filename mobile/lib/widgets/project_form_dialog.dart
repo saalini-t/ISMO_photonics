@@ -30,109 +30,197 @@ class _ProjectFormDialogState extends ConsumerState<ProjectFormDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-        left: 16,
-        right: 16,
-        top: 16,
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      child: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              widget.project == null ? 'New Project' : 'Edit Project',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              initialValue: _name,
-              decoration: const InputDecoration(
-                labelText: 'Project Name *',
-                border: OutlineInputBorder(),
-              ),
-              onSaved: (val) => _name = val ?? '',
-              validator: (val) => val == null || val.trim().isEmpty ? 'Project name is required' : null,
-            ),
-            const SizedBox(height: 12),
-            TextFormField(
-              initialValue: _description,
-              decoration: const InputDecoration(
-                labelText: 'Description (Optional)',
-                border: OutlineInputBorder(),
-              ),
-              maxLines: 3,
-              onSaved: (val) => _description = val ?? '',
-            ),
-            const SizedBox(height: 12),
-            DropdownButtonFormField<String>(
-              value: _status,
-              decoration: const InputDecoration(
-                labelText: 'Status',
-                border: OutlineInputBorder(),
-              ),
-              items: const [
-                DropdownMenuItem(value: 'NOT_STARTED', child: Text('Not Started')),
-                DropdownMenuItem(value: 'IN_PROGRESS', child: Text('In Progress')),
-                DropdownMenuItem(value: 'COMPLETED', child: Text('Completed')),
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom + 20,
+        left: 20,
+        right: 20,
+        top: 12,
+      ),
+      child: SafeArea(
+        child: SingleChildScrollView(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Top Grab Handle Bar
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 5,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF4F46E5).withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Icon(
+                        widget.project == null ? Icons.create_new_folder_rounded : Icons.edit_note_rounded,
+                        color: const Color(0xFF4F46E5),
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      widget.project == null ? 'Create New Project' : 'Edit Project Details',
+                      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+
+                TextFormField(
+                  initialValue: _name,
+                  decoration: InputDecoration(
+                    labelText: 'Project Name *',
+                    hintText: 'e.g. Website Redesign',
+                    prefixIcon: const Icon(Icons.folder_outlined),
+                    filled: true,
+                    fillColor: const Color(0xFFF8FAFC),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                  ),
+                  onSaved: (val) => _name = val ?? '',
+                  validator: (val) => val == null || val.trim().isEmpty ? 'Project name is required' : null,
+                ),
+                const SizedBox(height: 14),
+
+                TextFormField(
+                  initialValue: _description,
+                  decoration: InputDecoration(
+                    labelText: 'Description (Optional)',
+                    hintText: 'Brief summary of the project goals...',
+                    prefixIcon: const Icon(Icons.notes_rounded),
+                    filled: true,
+                    fillColor: const Color(0xFFF8FAFC),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                  ),
+                  maxLines: 3,
+                  onSaved: (val) => _description = val ?? '',
+                ),
+                const SizedBox(height: 14),
+
+                DropdownButtonFormField<String>(
+                  value: _status,
+                  decoration: InputDecoration(
+                    labelText: 'Project Status',
+                    prefixIcon: const Icon(Icons.flag_outlined),
+                    filled: true,
+                    fillColor: const Color(0xFFF8FAFC),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.grey.shade300),
+                    ),
+                  ),
+                  items: const [
+                    DropdownMenuItem(value: 'NOT_STARTED', child: Text('Not Started')),
+                    DropdownMenuItem(value: 'IN_PROGRESS', child: Text('In Progress')),
+                    DropdownMenuItem(value: 'COMPLETED', child: Text('Completed')),
+                  ],
+                  onChanged: (val) {
+                    if (val != null) setState(() => _status = val);
+                  },
+                ),
+                const SizedBox(height: 24),
+
+                SizedBox(
+                  width: double.infinity,
+                  height: 48,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF4F46E5),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 2,
+                    ),
+                    onPressed: _isSubmitting
+                        ? null
+                        : () async {
+                            if (_formKey.currentState!.validate()) {
+                              _formKey.currentState!.save();
+                              setState(() => _isSubmitting = true);
+
+                              final data = <String, dynamic>{
+                                'name': _name.trim(),
+                                'status': _status,
+                              };
+
+                              if (_description.trim().isNotEmpty) {
+                                data['description'] = _description.trim();
+                              }
+
+                              try {
+                                if (widget.project == null) {
+                                  await ref.read(projectsProvider.notifier).createProject(data);
+                                } else {
+                                  await ref.read(projectsProvider.notifier).updateProject(widget.project!.id, data);
+                                }
+                                if (context.mounted) Navigator.pop(context);
+                              } catch (e) {
+                                final errorMessage = e is ApiException ? e.message : e.toString();
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Error: $errorMessage'),
+                                      backgroundColor: Colors.redAccent,
+                                      behavior: SnackBarBehavior.floating,
+                                    ),
+                                  );
+                                }
+                              } finally {
+                                if (mounted) setState(() => _isSubmitting = false);
+                              }
+                            }
+                          },
+                    child: _isSubmitting
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                          )
+                        : Text(
+                            widget.project == null ? 'Create Project' : 'Update Project',
+                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                          ),
+                  ),
+                ),
               ],
-              onChanged: (val) {
-                if (val != null) setState(() => _status = val);
-              },
             ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: _isSubmitting
-                  ? null
-                  : () async {
-                      if (_formKey.currentState!.validate()) {
-                        _formKey.currentState!.save();
-                        setState(() => _isSubmitting = true);
-
-                        final data = <String, dynamic>{
-                          'name': _name.trim(),
-                          'status': _status,
-                        };
-
-                        if (_description.trim().isNotEmpty) {
-                          data['description'] = _description.trim();
-                        }
-
-                        try {
-                          if (widget.project == null) {
-                            await ref.read(projectsProvider.notifier).createProject(data);
-                          } else {
-                            await ref.read(projectsProvider.notifier).updateProject(widget.project!.id, data);
-                          }
-                          if (context.mounted) Navigator.pop(context);
-                        } catch (e) {
-                          final errorMessage = e is ApiException ? e.message : e.toString();
-                          if (context.mounted) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('Error: $errorMessage'),
-                                backgroundColor: Colors.red,
-                              ),
-                            );
-                          }
-                        } finally {
-                          if (mounted) setState(() => _isSubmitting = false);
-                        }
-                      }
-                    },
-              child: _isSubmitting
-                  ? const SizedBox(
-                      height: 20,
-                      width: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
-                    )
-                  : const Text('Save Project'),
-            ),
-          ],
+          ),
         ),
       ),
     );
