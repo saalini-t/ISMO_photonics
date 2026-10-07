@@ -10,7 +10,7 @@ final routerProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authProvider);
 
   return GoRouter(
-    initialLocation: '/dashboard',
+    initialLocation: '/login',
     redirect: (context, state) {
       final isAuth = authState.status == AuthStatus.authenticated;
       final isAuthenticating = authState.status == AuthStatus.authenticating;
@@ -20,7 +20,7 @@ final routerProvider = Provider<GoRouter>((ref) {
       final isRegister = state.matchedLocation == '/register';
 
       if (isInitial || isAuthenticating) {
-        return null; // Don't redirect while checking auth
+        return null; // Stay on current screen while loading
       }
 
       if (!isAuth && !isLogin && !isRegister) {
