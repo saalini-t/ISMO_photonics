@@ -2,7 +2,9 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# Install dependencies
+# Install openssl and dependencies
+RUN apk add --no-cache openssl
+
 COPY package*.json ./
 RUN npm install
 
