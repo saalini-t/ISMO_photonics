@@ -8,6 +8,9 @@ on:
       - 'v*'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build-apk:
     name: Build Release Android APK
@@ -51,10 +54,21 @@ jobs:
           path: mobile/build/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: error
 
-      - name: Create GitHub Release
-        if: startsWith(github.ref, 'refs/tags/v')
+      - name: Publish to GitHub Releases Section
         uses: softprops/action-gh-release@v2
         with:
-          files: mobile/build/app/outputs/flutter-apk/app-release.apk
+          tag_name: v1.0.0
+          name: "Project Management System v1.0.0 (Android APK)"
+          body: |
+            ### 📱 Production Android APK Release
+            - **App**: Full-Stack Project Management System
+            - **Platform**: Android (Flutter Material 3)
+            - **Backend**: Express REST API + PostgreSQL Database (Dockerized)
+            - **Features**: User Auth, Projects CRUD, Tasks CRUD, Responsive Dashboard
+            - **Built From Commit**: `${{ github.sha }}`
+          files: |
+            mobile/build/app/outputs/flutter-apk/app-release.apk
+          draft: false
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
